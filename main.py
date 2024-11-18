@@ -13,13 +13,12 @@ if input_type=='Upload audio file':
 
 elif input_type=='Record audio':
     audio = st.audio_input('Record audio')
-#2
 if audio:
     st.audio(audio)
-
+#2
+if audio:
     # Raw audio
     audio_raw = pydub.AudioSegment.from_file(audio)
-
 
     # Convert to .wav
     audio_wav = BytesIO()
@@ -29,16 +28,21 @@ if audio:
     recognizer = sr.Recognizer()
     with sr.AudioFile(audio_wav) as source: 
         audio_txt = recognizer.record(source)
-    audio_txt = recognizer.recognize_google(audio_txt)
+    audio_txt = recognizer.recognize_whisper(audio_txt)
+
 #3
 llm = Ollama(model='llama3.1:8b')
 prompt = st.text_input('Prompt')
 response = llm.invoke(prompt)
 
 st.write(response)
-#4
+
+
+#4 
 if st.button('Speech-to-Text'):
     text_output = audio_txt
+
+
 
 #5
 if st.button('Main Topic'): 
